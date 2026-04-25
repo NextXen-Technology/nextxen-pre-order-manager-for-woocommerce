@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WooCommerce Pre-Order Manager — Documentation</title>
+  <title>NextXen Pre-Order Manager for WooCommerce — Documentation</title>
   <style>
     /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -233,8 +233,8 @@
   <!-- ═══ SIDEBAR ═══ -->
   <aside class="sidebar">
     <a class="sidebar-brand" href="#top">
-      <h1>WooCommerce<br>Pre-Order Manager</h1>
-      <span>Documentation v1.0.1</span>
+      <h1>NextXen Pre-Order<br>Manager for WooCommerce</h1>
+      <span>Documentation v2.0.0</span>
     </a>
     <nav>
       <a href="#requirements" class="section-title">Getting Started</a>
@@ -288,13 +288,13 @@
     <!-- Page Header -->
     <div class="page-header">
       <div class="badge">Official Documentation</div>
-      <h1>WooCommerce Pre-Order Manager</h1>
+      <h1>NextXen Pre-Order Manager for WooCommerce</h1>
       <p>Accept pre-orders, collect deposits, and automate product releases — complete guide for store owners and developers.</p>
       <div class="meta-pills">
-        <div class="meta-pill"><strong>Version:</strong> 1.0.1</div>
+        <div class="meta-pill"><strong>Version:</strong> 2.0.0</div>
         <div class="meta-pill"><strong>Author:</strong> NextXen Technology</div>
-        <div class="meta-pill"><strong>WordPress:</strong> 6.8+</div>
-        <div class="meta-pill"><strong>WooCommerce:</strong> 10.4+</div>
+        <div class="meta-pill"><strong>WordPress:</strong> 6.0+</div>
+        <div class="meta-pill"><strong>WooCommerce:</strong> 7.0+</div>
         <div class="meta-pill"><strong>PHP:</strong> 7.4+</div>
       </div>
     </div>
@@ -346,8 +346,8 @@
         <table>
           <thead><tr><th>Requirement</th><th>Minimum</th><th>Tested Up To</th></tr></thead>
           <tbody>
-            <tr><td>WordPress</td><td>6.8</td><td>7.0</td></tr>
-            <tr><td>WooCommerce</td><td>10.4</td><td>10.6</td></tr>
+            <tr><td>WordPress</td><td>6.0</td><td>6.9</td></tr>
+            <tr><td>WooCommerce</td><td>7.0</td><td>10.6</td></tr>
             <tr><td>PHP</td><td>7.4</td><td>8.4</td></tr>
           </tbody>
         </table>
@@ -367,15 +367,15 @@
         <li>Log in to your WordPress admin panel.</li>
         <li>Go to <strong>Plugins → Add New Plugin</strong>.</li>
         <li>Click <strong>Upload Plugin</strong> at the top of the page.</li>
-        <li>Click <strong>Choose File</strong>, select the <code>woocommerce-pre-order-manager.zip</code> file, then click <strong>Install Now</strong>.</li>
+        <li>Click <strong>Choose File</strong>, select the <code>nextxen-pre-order-manager.zip</code> file, then click <strong>Install Now</strong>.</li>
         <li>After installation completes, click <strong>Activate Plugin</strong>.</li>
       </ol>
 
       <h3 class="sub-heading">2.2 Upload via FTP</h3>
       <ol class="steps">
-        <li>Unzip the downloaded <code>woocommerce-pre-order-manager.zip</code> file.</li>
+        <li>Unzip the downloaded <code>nextxen-pre-order-manager.zip</code> file.</li>
         <li>Connect to your server with an FTP client (e.g., FileZilla).</li>
-        <li>Upload the <code>woocommerce-pre-order-manager</code> folder to <code>/wp-content/plugins/</code>.</li>
+        <li>Upload the <code>nextxen-pre-order-manager</code> folder to <code>/wp-content/plugins/</code>.</li>
         <li>In WordPress admin, go to <strong>Plugins → Installed Plugins</strong> and click <strong>Activate</strong>.</li>
       </ol>
 
@@ -384,7 +384,7 @@
       <ul>
         <li><strong>WooCommerce → Pre-Orders</strong> appears in the left admin menu.</li>
         <li><strong>WooCommerce → Settings → Pre-Orders</strong> tab is visible.</li>
-        <li>The WordPress admin dashboard shows a <strong>Pre-Order Manager</strong> widget.</li>
+        <li><strong>(Premium)</strong> The WordPress admin dashboard shows a <strong>Pre-Order Manager</strong> widget.</li>
       </ul>
     </div>
 
@@ -744,7 +744,7 @@
 
       <h3 class="sub-heading">9.4 Countdown Timer Shortcode</h3>
       <p>Embed a live countdown to the release date anywhere on your site:</p>
-      <pre><code>[woocommerce_pre_order_countdown]</code></pre>
+      <pre><code>[npom_countdown]</code></pre>
       <p>Works in pages, posts, sidebar widgets, and theme templates. If no release date is set, the shortcode outputs nothing.</p>
     </div>
 
@@ -827,15 +827,15 @@
         <table>
           <thead><tr><th>Hook</th><th>Arguments</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><code>wc_pre_order_manager_admin_page_actions</code></td><td>—</td><td>Fires in the Pre-Orders admin page header. Used to add buttons.</td></tr>
-            <tr><td><code>wc_pre_order_manager_product_options_start</code></td><td><code>$post_id</code></td><td>Fires at the start of the Pre-Orders product tab panel.</td></tr>
-            <tr><td><code>wc_pre_order_manager_product_options_end</code></td><td>—</td><td>Fires at the end of the Pre-Orders product tab panel.</td></tr>
-            <tr><td><code>wc_pre_order_manager_save_product_options</code></td><td><code>$post_id, $is_enabled, $timestamp</code></td><td>Fires when a product with pre-order settings is saved. Use priority <code>10, 3</code>.</td></tr>
-            <tr><td><code>wc_pre_order_manager_pre_order_completed</code></td><td><code>$order</code></td><td>Fires when a pre-order is completed/released.</td></tr>
-            <tr><td><code>wc_pre_order_manager_pre_order_cancelled</code></td><td><code>$order</code></td><td>Fires when a pre-order is cancelled.</td></tr>
-            <tr><td><code>wc_pre_order_manager_pre_order_date_changed</code></td><td><code>$order, $message</code></td><td>Fires when a product's release date is changed.</td></tr>
-            <tr><td><code>wc_pre_order_manager_pre_ordered</code></td><td><code>$order</code></td><td>Fires when a new pre-order is placed.</td></tr>
-            <tr><td><code>wc_pre_order_manager_pre_order_available</code></td><td><code>$order</code></td><td>Fires when a pre-ordered product becomes available.</td></tr>
+            <tr><td><code>npom_admin_page_actions</code></td><td>—</td><td>Fires in the Pre-Orders admin page header. Used to add buttons.</td></tr>
+            <tr><td><code>npom_product_options_start</code></td><td><code>$post_id</code></td><td>Fires at the start of the Pre-Orders product tab panel.</td></tr>
+            <tr><td><code>npom_product_options_end</code></td><td>—</td><td>Fires at the end of the Pre-Orders product tab panel.</td></tr>
+            <tr><td><code>npom_save_product_options</code></td><td><code>$post_id, $is_enabled, $timestamp</code></td><td>Fires when a product with pre-order settings is saved. Use priority <code>10, 3</code>.</td></tr>
+            <tr><td><code>npom_pre_order_completed</code></td><td><code>$order</code></td><td>Fires when a pre-order is completed/released.</td></tr>
+            <tr><td><code>npom_pre_order_cancelled</code></td><td><code>$order</code></td><td>Fires when a pre-order is cancelled.</td></tr>
+            <tr><td><code>npom_pre_order_date_changed</code></td><td><code>$order, $message</code></td><td>Fires when a product's release date is changed.</td></tr>
+            <tr><td><code>npom_pre_ordered</code></td><td><code>$order</code></td><td>Fires when a new pre-order is placed.</td></tr>
+            <tr><td><code>npom_pre_order_available</code></td><td><code>$order</code></td><td>Fires when a pre-ordered product becomes available.</td></tr>
             <tr><td><code>wc_pre_order_status_new_to_active</code></td><td><code>$order</code></td><td>Fires when a pre-order moves from new to active status.</td></tr>
             <tr><td><code>wc_pre_order_status_active_to_cancelled</code></td><td><code>$order</code></td><td>Fires when a pre-order is cancelled.</td></tr>
           </tbody>
@@ -847,38 +847,38 @@
         <table>
           <thead><tr><th>Hook</th><th>Arguments</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><code>wc_pre_order_manager_settings</code></td><td><code>$settings</code></td><td>Filter the global settings array to add/remove settings fields.</td></tr>
-            <tr><td><code>wc_pre_order_manager_supported_product_types</code></td><td><code>$types</code></td><td>Filter the list of supported product type slugs.</td></tr>
-            <tr><td><code>wc_pre_order_manager_admin_script_data</code></td><td><code>$data, $hook_suffix</code></td><td>Filter the data passed to the admin JavaScript.</td></tr>
+            <tr><td><code>npom_settings</code></td><td><code>$settings</code></td><td>Filter the global settings array to add/remove settings fields.</td></tr>
+            <tr><td><code>npom_supported_product_types</code></td><td><code>$types</code></td><td>Filter the list of supported product type slugs.</td></tr>
+            <tr><td><code>npom_admin_script_data</code></td><td><code>$data, $hook_suffix</code></td><td>Filter the data passed to the admin JavaScript.</td></tr>
           </tbody>
         </table>
       </div>
 
       <h3 class="sub-heading">Order Meta Keys</h3>
       <div class="meta-grid">
-        <div class="meta-key"><code>_wc_pre_order_manager_is_pre_order</code><p><code>1</code> if the order is a pre-order</p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_status</code><p><code>active</code>, <code>completed</code>, or <code>cancelled</code></p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_when_charged</code><p><code>upfront</code> or <code>upon_release</code></p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_deposit_paid</code><p>Deposit amount paid (empty string if no deposit)</p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_remaining_balance</code><p>Balance due on release</p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_original_price</code><p>Original product price before deposit reduction</p></div>
+        <div class="meta-key"><code>_npom_is_pre_order</code><p><code>1</code> if the order is a pre-order</p></div>
+        <div class="meta-key"><code>_npom_status</code><p><code>active</code>, <code>completed</code>, or <code>cancelled</code></p></div>
+        <div class="meta-key"><code>_npom_when_charged</code><p><code>upfront</code> or <code>upon_release</code></p></div>
+        <div class="meta-key"><code>_npom_deposit_paid</code><p>Deposit amount paid (empty string if no deposit)</p></div>
+        <div class="meta-key"><code>_npom_remaining_balance</code><p>Balance due on release</p></div>
+        <div class="meta-key"><code>_npom_original_price</code><p>Original product price before deposit reduction</p></div>
       </div>
 
       <h3 class="sub-heading">Product Meta Keys</h3>
       <div class="meta-grid">
-        <div class="meta-key"><code>_wc_pre_order_manager_enabled</code><p><code>yes</code> if pre-orders are enabled</p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_availability_datetime</code><p>Unix timestamp of the release date</p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_when_to_charge</code><p><code>upfront</code> or <code>upon_release</code></p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_fee</code><p>Optional pre-order fee amount</p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_max_quantity</code><p>Maximum pre-orders allowed (0 = unlimited)</p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_deposit_type</code><p><code>none</code>, <code>fixed</code>, or <code>percent</code></p></div>
-        <div class="meta-key"><code>_wc_pre_order_manager_deposit_value</code><p>The deposit amount or percentage</p></div>
+        <div class="meta-key"><code>_npom_enabled</code><p><code>yes</code> if pre-orders are enabled</p></div>
+        <div class="meta-key"><code>_npom_availability_datetime</code><p>Unix timestamp of the release date</p></div>
+        <div class="meta-key"><code>_npom_when_to_charge</code><p><code>upfront</code> or <code>upon_release</code></p></div>
+        <div class="meta-key"><code>_npom_fee</code><p>Optional pre-order fee amount</p></div>
+        <div class="meta-key"><code>_npom_max_quantity</code><p>Maximum pre-orders allowed (0 = unlimited)</p></div>
+        <div class="meta-key"><code>_npom_deposit_type</code><p><code>none</code>, <code>fixed</code>, or <code>percent</code></p></div>
+        <div class="meta-key"><code>_npom_deposit_value</code><p>The deposit amount or percentage</p></div>
       </div>
 
       <h3 class="sub-heading">Code Examples</h3>
       <h4>Add a custom field to the Pre-Orders product tab</h4>
       <pre><code>// Render the field
-add_action( 'wc_pre_order_manager_product_options_end', function() {
+add_action( 'npom_product_options_end', function() {
     woocommerce_wp_text_input( array(
         'id'    => '_my_custom_preorder_field',
         'label' => __( 'My Custom Field', 'my-plugin' ),
@@ -886,7 +886,7 @@ add_action( 'wc_pre_order_manager_product_options_end', function() {
 } );
 
 // Save the field (3 accepted args required)
-add_action( 'wc_pre_order_manager_save_product_options', function( $post_id, $is_enabled, $timestamp ) {
+add_action( 'npom_save_product_options', function( $post_id, $is_enabled, $timestamp ) {
     if ( isset( $_POST['_my_custom_preorder_field'] ) ) {
         update_post_meta(
             $post_id,
@@ -897,8 +897,8 @@ add_action( 'wc_pre_order_manager_save_product_options', function( $post_id, $is
 }, 10, 3 );</code></pre>
 
       <h4>Add a custom button to the Pre-Orders admin page</h4>
-      <pre><code>add_action( 'wc_pre_order_manager_admin_page_actions', function() {
-    $url = admin_url( 'admin.php?page=wc_pre_order_manager&amp;action=my_action' );
+      <pre><code>add_action( 'npom_admin_page_actions', function() {
+    $url = admin_url( 'admin.php?page=npom_manager&amp;action=my_action' );
     printf(
         '&lt;a href="%s" class="page-title-action"&gt;%s&lt;/a&gt;',
         esc_url( $url ),
@@ -907,9 +907,9 @@ add_action( 'wc_pre_order_manager_save_product_options', function( $post_id, $is
 } );</code></pre>
 
       <h4>Run code when a pre-order is completed</h4>
-      <pre><code>add_action( 'wc_pre_order_manager_pre_order_completed', function( $order ) {
+      <pre><code>add_action( 'npom_pre_order_completed', function( $order ) {
     // $order is a WC_Order object
-    $product_id = WC_Pre_Order_Manager_Order::get_pre_order_product( $order )->get_id();
+    $product_id = NPOM_Order::get_pre_order_product( $order )->get_id();
     // your logic here...
 } );</code></pre>
     </div>
@@ -928,7 +928,7 @@ add_action( 'wc_pre_order_manager_save_product_options', function( $post_id, $is
             <li>Confirm the release date is in the past (in your store's timezone).</li>
             <li>Go to <strong>WooCommerce → Settings → Pre-Orders → Test site settings</strong> and confirm <em>Disable automatic pre-order processing</em> is <strong>unchecked</strong>.</li>
             <li>Set up a real server cron job (see <a href="#cron">Section 10</a>).</li>
-            <li>Use WP Crontrol plugin to manually trigger <code>wc_pre_order_manager_completion_check</code> and confirm it fires.</li>
+            <li>Use WP Crontrol plugin to manually trigger <code>npom_completion_check</code> and confirm it fires.</li>
           </ul>
         </div>
       </div>
@@ -1030,7 +1030,7 @@ add_action( 'wc_pre_order_manager_save_product_options', function( $post_id, $is
 
       <div class="faq-item">
         <div class="faq-q">Can I change the release date after a pre-order is placed?</div>
-        <div class="faq-a">Yes. Update the product's release date and save. The plugin fires the <code>wc_pre_order_manager_pre_order_date_changed</code> action and sends a <strong>Pre-Order Date Changed</strong> email to all customers with active pre-orders for that product.</div>
+        <div class="faq-a">Yes. Update the product's release date and save. The plugin fires the <code>npom_pre_order_date_changed</code> action and sends a <strong>Pre-Order Date Changed</strong> email to all customers with active pre-orders for that product.</div>
       </div>
 
       <div class="faq-item">
@@ -1050,7 +1050,7 @@ add_action( 'wc_pre_order_manager_save_product_options', function( $post_id, $is
 
       <div class="faq-item">
         <div class="faq-q">Can I translate the plugin into my language?</div>
-        <div class="faq-a">Yes. The plugin is fully translation-ready. All strings use the <code>woocommerce-pre-orders-manager</code> text domain. Place your <code>.po</code>/<code>.mo</code> files in <code>/wp-content/languages/plugins/</code>.</div>
+        <div class="faq-a">Yes. The plugin is fully translation-ready. All strings use the <code>nextxen-pre-order-manager</code> text domain. Place your <code>.po</code>/<code>.mo</code> files in <code>/wp-content/languages/plugins/</code>.</div>
       </div>
 
       <div class="faq-item">
@@ -1065,14 +1065,14 @@ add_action( 'wc_pre_order_manager_save_product_options', function( $post_id, $is
 
       <div class="faq-item">
         <div class="faq-q">Where can I get support?</div>
-        <div class="faq-a">Visit <a href="https://nextxentech.com/support/" target="_blank">nextxentech.com/support</a> to submit a support request. Full documentation is available at <a href="https://docs.nextxentech.com/woocommerce-pre-orders-manager/" target="_blank">docs.nextxentech.com/woocommerce-pre-orders-manager</a>.</div>
+        <div class="faq-a">Visit <a href="https://nextxentech.com/support/" target="_blank">nextxentech.com/support</a> to submit a support request. Full documentation is available at <a href="https://nextxentech.com/docs/nextxen-pre-order-manager-for-woocommerce/" target="_blank">nextxentech.com/docs/nextxen-pre-order-manager-for-woocommerce</a>.</div>
       </div>
     </div>
 
     <!-- Footer -->
     <div class="doc-footer">
-      <p>WooCommerce Pre-Order Manager &mdash; &copy; 2026 <a href="https://nextxentech.com" target="_blank">NextXen Technology</a>. Licensed under GNU GPL v3.0.</p>
-      <p style="margin-top:6px;"><a href="https://nextxentech.com/support/" target="_blank">Support</a> &nbsp;&middot;&nbsp; <a href="https://docs.nextxentech.com/woocommerce-pre-orders-manager/" target="_blank">Online Docs</a></p>
+      <p>NextXen Pre-Order Manager for WooCommerce &mdash; &copy; 2026 <a href="https://nextxentech.com" target="_blank">NextXen Technology</a>. Licensed under GNU GPL v3.0.</p>
+      <p style="margin-top:6px;"><a href="https://nextxentech.com/support/" target="_blank">Support</a> &nbsp;&middot;&nbsp; <a href="https://nextxentech.com/docs/nextxen-pre-order-manager-for-woocommerce/" target="_blank">Online Docs</a></p>
     </div>
 
   </main>

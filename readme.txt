@@ -14,11 +14,11 @@ Accept pre-orders in WooCommerce. Set release dates, automate order completion, 
 
 == Description ==
 
-**WooCommerce Pre-Order Manager** lets you turn any WooCommerce product into a pre-orderable item — with a release date, automated order completion, customer emails, and flexible payment options. Start capturing revenue before your product is ready to ship.
+**NextXen Pre-Order Manager for WooCommerce** lets you turn any WooCommerce product into a pre-orderable item — with a release date, automated order completion, customer emails, and flexible payment options. Start capturing revenue before your product is ready to ship.
 
 Whether you're launching a new product line, running a made-to-order business, or building hype around a limited release, this plugin gives your store a complete, professional pre-order system.
 
-🔗 **[Plugin Website](https://nextxentech.com/plugins/woocommerce-pre-order-manager/)** | **[Documentation](https://nextxentech.com/docs/woocommerce-pre-order-manager/)** | **[Support](https://nextxentech.com/support/)**
+🔗 **[Plugin Website](https://nextxentech.com/plugins/nextxen-pre-order-manager-for-woocommerce/)** | **[Documentation](https://nextxentech.com/docs/nextxen-pre-order-manager-for-woocommerce/)** | **[Support](https://nextxentech.com/support/)**
 
 ---
 
@@ -63,7 +63,7 @@ All strings use the `nextxen-pre-order-manager` text domain. Compatible with WPM
 
 = Premium Features =
 
-Upgrade to **WooCommerce Pre-Order Manager Premium** for advanced tools that serious store owners need:
+Upgrade to **NextXen Pre-Order Manager for WooCommerce Premium** for advanced tools that serious store owners need:
 
 🔒 **Deposit / Partial Payments**
 Collect a fixed-amount or percentage deposit at checkout. The remaining balance is automatically charged (via a new order) when the product releases. Deposit amounts appear in the order screen, emails, and CSV export.
@@ -83,7 +83,7 @@ Pre-order subscription products. No charge at checkout — the subscription star
 🔒 **Priority Support**
 Skip the queue and get direct help from the NextXen Technology team.
 
-👉 [View Premium Plans](https://nextxentech.com/plugins/woocommerce-pre-order-manager/)
+👉 [View Premium Plans](https://nextxentech.com/plugins/nextxen-pre-order-manager-for-woocommerce/)
 
 ---
 
@@ -111,7 +111,7 @@ Skip the queue and get direct help from the NextXen Technology team.
 
 1. Log in to your WordPress admin panel.
 2. Go to **Plugins → Add New Plugin**.
-3. Search for **WooCommerce Pre-Order Manager**.
+3. Search for **NextXen Pre-Order Manager for WooCommerce**.
 4. Click **Install Now**, then **Activate Plugin**.
 
 = Manual Installation =
@@ -128,7 +128,7 @@ Skip the queue and get direct help from the NextXen Technology team.
 3. Set a release date, choose the payment model, and save the product.
 4. Your product is now available for pre-order.
 
-Full setup guide: [nextxentech.com/docs/woocommerce-pre-order-manager/](https://nextxentech.com/docs/woocommerce-pre-order-manager/)
+Full setup guide: [nextxentech.com/docs/woocommerce-pre-order-manager/](https://nextxentech.com/docs/nextxen-pre-order-manager-for-woocommerce/)
 
 == Frequently Asked Questions ==
 
@@ -170,7 +170,7 @@ Yes. All strings use the `nextxen-pre-order-manager` text domain and a `.pot` fi
 
 = Where can I find the documentation? =
 
-Full documentation is at [nextxentech.com/docs/woocommerce-pre-order-manager/](https://nextxentech.com/docs/woocommerce-pre-order-manager/)
+Full documentation is at [nextxentech.com/docs/woocommerce-pre-order-manager/](https://nextxentech.com/docs/nextxen-pre-order-manager-for-woocommerce/)
 
 = Where can I get support? =
 
