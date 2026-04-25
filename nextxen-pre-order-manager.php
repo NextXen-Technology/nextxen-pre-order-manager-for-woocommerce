@@ -71,6 +71,41 @@ if ( ! function_exists( 'npom_fs' ) ) {
     // Signal that SDK was initiated.
     do_action( 'npom_fs_loaded' );
 }
+
+// ── Freemius uninstall cleanup (replaces uninstall.php) ───────────────────────
+function npom_fs_uninstall_cleanup() {
+    $options = array(
+        'npom_add_to_cart_button_text',
+        'npom_place_order_button_text',
+        'npom_single_product_message',
+        'npom_shop_loop_product_message',
+        'npom_availability_date_cart_title_text',
+        'npom_upon_release_order_total_format',
+        'npom_upfront_order_total_format',
+        'npom_auto_pre_order_out_of_stock',
+        'npom_disable_auto_processing',
+    );
+
+    foreach ( $options as $option ) {
+        delete_option( $option );
+    }
+
+    wp_clear_scheduled_hook( 'npom_completion_check' );
+    wp_clear_scheduled_hook( 'npom_process_batch' );
+    wp_clear_scheduled_hook( 'npom_complete_pre_order' );
+
+    global $wpdb;
+    // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+    $wpdb->query(
+        $wpdb->prepare(
+            "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+            $wpdb->esc_like( '_transient_npom_' ) . '%',
+            $wpdb->esc_like( '_transient_timeout_npom_' ) . '%'
+        )
+    );
+    // phpcs:enable
+}
+npom_fs()->add_action( 'after_uninstall', 'npom_fs_uninstall_cleanup' );
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
