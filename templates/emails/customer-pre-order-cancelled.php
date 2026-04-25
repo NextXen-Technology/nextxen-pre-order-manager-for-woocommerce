@@ -26,7 +26,7 @@ esc_html_e( 'Your pre-order has been cancelled. Your order details are shown bel
 </p>
 
 <?php if ( $message ) : ?>
-<blockquote><?php echo wpautop( wptexturize( $message ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></blockquote>
+<blockquote><?php echo wp_kses_post( wpautop( wptexturize( $message ) ) ); ?></blockquote>
 <?php endif; ?>
 
 <?php do_action( 'woocommerce_email_order_details', $order, false, $plain_text, $email ); ?>

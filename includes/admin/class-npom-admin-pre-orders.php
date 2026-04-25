@@ -276,7 +276,7 @@ class NPOM_Admin_Pre_Orders {
 		// Security check.
 		if (
 			! isset( $_POST['_wpnonce'] ) ||
-			! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'npom-process-actions' ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'npom-process-actions' )
 		) {
 			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'nextxen-pre-order-manager' ) );
 		}

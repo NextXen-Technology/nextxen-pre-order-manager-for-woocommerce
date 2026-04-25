@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       NextXen Pre-Order Manager for WooCommerce
- * Plugin URI:        https://nextxentech.com/plugins/nextxen-pre-order-manager-for-woocommerce/
+ * Plugin URI:        https://nextxentech.com/
  * Description:       Accept pre-orders in WooCommerce — set release dates, choose upfront or pay-on-release payment, send automated emails, and let customers reserve products before they launch. Upgrade to Premium for deposits, quantity limits, dashboard stats, CSV export, and Subscriptions support.
  * Author:            NextXen Technology
  * Author URI:        https://nextxentech.com

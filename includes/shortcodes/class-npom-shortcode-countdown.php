@@ -43,13 +43,7 @@ class NPOM_Shortcode_Countdown {
 		$content = wp_kses_normalize_entities( $content );
 		$content = preg_replace_callback( '%(<!--.*?(-->|$))|(<(?!})[^>]*(>|$))%', array( __CLASS__, 'sanitize_layout_callback' ), $content );
 
-		// This sanitization comes from the `esc_js` function in WordPress.
-		// The same sanitization is used except for `_wp_specialchars` which removes characters needed for HTML.
-		// https://core.trac.wordpress.org/browser/tags/6.2/src/wp-includes/formatting.php#L4548
-		$content = wp_check_invalid_utf8( $content );
-		$content = preg_replace( '/&#(x)?0*(?(1)27|39);?/i', "'", stripslashes( $content ) );
-		$content = str_replace( "\r", '', $content );
-		return str_replace( "\n", '\\n', addslashes( $content ) );
+		return $content;
 	}
 
 	/**
@@ -153,7 +147,7 @@ class NPOM_Shortcode_Countdown {
 		if ( $layout ) {
 			$layout  = esc_js( $shortcode_atts['before'] );
 			$layout .= self::sanitize_layout( $shortcode_atts['layout'] );
-			$layout .= esc_js( $shortcode_atts['after'] );
+			$layout .= sanitize_text_field( $shortcode_atts['after'] );
 		}
 
 		// enqueue the required javascripts
@@ -166,7 +160,7 @@ class NPOM_Shortcode_Countdown {
 			$( function() {
 				$('#woocommerce-pre-order-manager-countdown-<?php echo esc_attr( $until ); ?>').countdown({
 					until: new Date(<?php echo (int) $until * 1000; ?>),
-					layout: '<?php echo $layout; // phpcs:ignore WordPress.Security -- nosemgrep -- already sanitized by esc_js. ?>',
+					layout: '<?php echo esc_js( $layout ); ?>',
 					format: '<?php echo esc_js( $shortcode_atts['format'] ); // nosemgrep -- already sanitized by esc_js. ?>',
 					compact: <?php echo filter_var( $shortcode_atts['compact'], FILTER_VALIDATE_BOOLEAN ) ? 'true' : 'false'; // nosemgrep -- already sanitized by filter_var. ?>,
 					expiryUrl: location.href,

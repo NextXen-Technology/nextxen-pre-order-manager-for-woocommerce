@@ -34,7 +34,7 @@ printf( esc_html__( 'A pre-order from %s has been cancelled. The order details a
 
 <?php if ( $message ) : ?>
 	<blockquote>
-		<?php echo wpautop( wptexturize( $message ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo wp_kses_post( wpautop( wptexturize( $message ) ) ); ?>
 	</blockquote>
 <?php endif; ?>
 
