@@ -1,0 +1,1 @@
+(()=>{"use strict";(0,window.wc.blocksCheckout.registerCheckoutFilters)("npom",{placeOrderButtonLabel:e=>{const r=window.npom_checkout_params||{};return r&&r.cart_contains_pre_order&&r.place_order_button_text&&""!==r.place_order_button_text?r.place_order_button_text:e}})})();

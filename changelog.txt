@@ -1,0 +1,18 @@
+*** WooCommerce Pre-Order Manager Changelog ***
+
+2026-04-12 - version 2.0.0
+* New: Freemium model — core pre-order features are now free; advanced features require a Premium license.
+* New: Premium — Deposit / Partial Payments (fixed amount or percentage; balance order created automatically on release).
+* New: Premium — Per-product Quantity Limit with low-stock urgency notice and automatic pre-order closure.
+* New: Premium — Admin Dashboard Widget with live stats (active count, revenue, monthly summary) and upcoming releases.
+* New: Premium — CSV Export (nonce-secured, UTF-8 BOM, Excel-compatible, 12 columns).
+* New: Premium — WooCommerce Subscriptions compatibility (requires Subscriptions 6.2.0+).
+* New: Freemius SDK integrated for license management, automatic updates, and upgrade/trial flow.
+* New: "Upgrade to Premium" link shown in the Plugins list table for free installs.
+* New: Upgrade notice shown in the Pre-Orders product tab listing locked premium features with upgrade/trial links.
+* Improvement: plugin_action_links now includes Docs link and conditional Upgrade link.
+* Improvement: Subscriptions compat class always required (static helpers available to all users) but only instantiated for premium installs — prevents fatal errors.
+* Fix: All premium class files safely skip loading when no valid Freemius license is present.
+
+2013-04-25 - version 1.0.1
+* Initial release.

@@ -1,0 +1,1 @@
+(()=>{var a;(a=jQuery).countdown.regional.ko={labels:["년","월","주","일","시","분","초"],labels1:["년","월","주","일","시","분","초"],compactLabels:["년","월","주","일"],compactLabels1:["년","월","주","일"],whichLabels:null,timeSeparator:":",isRTL:!1},a.countdown.setDefaults(a.countdown.regional.ko)})();

@@ -1,0 +1,38 @@
+# ============================================================
+# .distignore — Files excluded from the WordPress.org (free) zip.
+#
+# The premium feature files are distributed ONLY via Freemius.
+# Do NOT include them in the WordPress.org submission.
+# ============================================================
+
+# Dev / build tools (vendor/freemius is included — it is required by WordPress.org)
+.git
+.github
+.gitignore
+.distignore
+node_modules
+package.json
+package-lock.json
+composer.json
+composer.lock
+*.map
+*.log
+Gruntfile.js
+webpack.config.js
+phpcs.xml
+phpunit.xml
+.phpcs.xml
+.editorconfig
+
+# Local docs (not for WP.org)
+documentation.html
+changelog.txt
+
+# ── Premium-only PHP files ──────────────────────────────────
+# These files are only distributed in the Freemius premium zip.
+
+includes/premium/class-npom-deposit.php
+includes/premium/class-npom-quantity-limit.php
+includes/admin/class-npom-dashboard-widget.php
+includes/admin/class-npom-export.php
+includes/compat/class-npom-compat-subscriptions.php

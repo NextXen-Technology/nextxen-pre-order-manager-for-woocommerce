@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WooCommerce Pre-Order Manager — Documentation</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #1d2327;
+      background: #f6f7f7;
+    }
+
+    /* ── Layout ── */
+    .doc-wrapper { display: flex; min-height: 100vh; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 280px;
+      min-width: 280px;
+      background: #1d2327;
+      color: #c3c4c7;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 0 0 40px;
+      flex-shrink: 0;
+    }
+    .sidebar-brand {
+      background: #7f54b3;
+      padding: 20px 24px;
+      display: block;
+    }
+    .sidebar-brand h1 { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.4; margin: 0; }
+    .sidebar-brand span { font-size: 11px; color: rgba(255,255,255,.65); display: block; margin-top: 2px; }
+    .sidebar nav { padding: 12px 0; }
+    .sidebar nav a {
+      display: block;
+      padding: 7px 24px;
+      color: #c3c4c7;
+      text-decoration: none;
+      font-size: 13px;
+      border-left: 3px solid transparent;
+      transition: all .15s;
+    }
+    .sidebar nav a:hover { color: #fff; background: rgba(255,255,255,.05); border-left-color: #7f54b3; }
+    .sidebar nav a.section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: #72777c;
+      padding-top: 20px;
+      padding-bottom: 4px;
+      cursor: default;
+      border-left-color: transparent !important;
+      background: none !important;
+    }
+    .sidebar nav a.sub { padding-left: 36px; font-size: 12px; }
+
+    /* ── Main Content ── */
+    .main {
+      flex: 1;
+      max-width: 900px;
+      padding: 48px 56px;
+      background: #fff;
+      min-height: 100vh;
+    }
+
+    /* ── Page Header ── */
+    .page-header {
+      border-bottom: 3px solid #7f54b3;
+      padding-bottom: 28px;
+      margin-bottom: 40px;
+    }
+    .badge { display: inline-block; background: #7f54b3; color: #fff; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+    .page-header h1 { font-size: 30px; font-weight: 800; color: #1d2327; line-height: 1.2; }
+    .page-header p { color: #50575e; font-size: 15px; margin-top: 8px; }
+    .meta-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .meta-pill { font-size: 12px; background: #f0f0f1; color: #50575e; padding: 4px 12px; border-radius: 20px; }
+    .meta-pill strong { color: #1d2327; }
+
+    /* ── Section Headings ── */
+    .doc-section { margin-bottom: 56px; }
+    h2.section-heading {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1d2327;
+      border-left: 4px solid #7f54b3;
+      padding-left: 14px;
+      margin-bottom: 20px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+    h3.sub-heading {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1d2327;
+      margin: 28px 0 12px;
+    }
+    h3.sub-heading::before { content: "▸ "; color: #7f54b3; }
+    h4 { font-size: 14px; font-weight: 700; color: #50575e; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: .4px; }
+
+    /* ── Prose ── */
+    p { margin-bottom: 14px; color: #3c434a; }
+    strong { color: #1d2327; }
+    ul, ol { padding-left: 22px; margin-bottom: 14px; color: #3c434a; }
+    li { margin-bottom: 5px; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    thead { background: #1d2327; color: #fff; }
+    thead th { padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+    tbody tr:nth-child(even) { background: #f6f7f7; }
+    tbody td { padding: 9px 14px; border-bottom: 1px solid #f0f0f1; vertical-align: top; }
+    tbody td:first-child { font-weight: 600; color: #1d2327; white-space: nowrap; }
+
+    /* ── Code ── */
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      background: #f0f0f1;
+      color: #7f54b3;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 13px;
+    }
+    pre {
+      background: #1d2327;
+      color: #a8c4e0;
+      padding: 20px 24px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 16px 0 20px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    /* ── Callout Boxes ── */
+    .callout {
+      display: flex;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 6px;
+      margin: 16px 0 20px;
+      font-size: 13.5px;
+    }
+    .callout-icon { font-size: 18px; flex-shrink: 0; line-height: 1.6; }
+    .callout.tip { background: #edfaef; border-left: 4px solid #00a32a; }
+    .callout.note { background: #f0f6fc; border-left: 4px solid #0071a1; }
+    .callout.warn { background: #fff8e5; border-left: 4px solid #dba617; }
+    .callout.danger { background: #fce8e8; border-left: 4px solid #cc1818; }
+    .callout p { margin: 0; color: inherit; }
+
+    /* ── Steps ── */
+    .steps { list-style: none; padding: 0; counter-reset: step-counter; margin-bottom: 20px; }
+    .steps li {
+      counter-increment: step-counter;
+      display: flex;
+      gap: 14px;
+      margin-bottom: 12px;
+      align-items: flex-start;
+    }
+    .steps li::before {
+      content: counter(step-counter);
+      background: #7f54b3;
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      min-width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ── FAQ ── */
+    .faq-item { border: 1px solid #f0f0f1; border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { font-weight: 700; padding: 14px 18px; background: #f6f7f7; color: #1d2327; font-size: 14px; }
+    .faq-q::before { content: "Q: "; color: #7f54b3; }
+    .faq-a { padding: 12px 18px; font-size: 14px; color: #3c434a; border-top: 1px solid #f0f0f1; }
+
+    /* ── Troubleshoot ── */
+    .trouble-item { border: 1px solid #f0f0f1; border-radius: 6px; margin-bottom: 16px; overflow: hidden; }
+    .trouble-problem { background: #fce8e8; padding: 12px 18px; font-weight: 700; color: #cc1818; font-size: 14px; }
+    .trouble-detail { padding: 12px 18px; }
+    .trouble-detail h4 { margin-top: 0; }
+
+    /* ── TOC ── */
+    .toc { background: #f6f7f7; border: 1px solid #e2e4e7; border-radius: 6px; padding: 20px 24px; margin-bottom: 40px; }
+    .toc h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .6px; color: #72777c; margin-bottom: 12px; font-weight: 700; }
+    .toc ol { padding-left: 20px; margin: 0; }
+    .toc li { margin-bottom: 4px; font-size: 13.5px; }
+    .toc a { color: #0071a1; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .toc ol ol { margin-top: 4px; }
+
+    /* ── Meta Keys Grid ── */
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .meta-key { background: #f6f7f7; border: 1px solid #e2e4e7; border-radius: 5px; padding: 10px 14px; }
+    .meta-key code { display: block; font-size: 12px; margin-bottom: 4px; }
+    .meta-key p { font-size: 12px; color: #72777c; margin: 0; }
+
+    /* ── Footer ── */
+    .doc-footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid #f0f0f1; text-align: center; color: #8c8f94; font-size: 12px; }
+    .doc-footer a { color: #7f54b3; text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { padding: 28px 20px; max-width: 100%; }
+      .meta-grid { grid-template-columns: 1fr; }
+    }
+    @media print {
+      .sidebar { display: none; }
+      .main { padding: 20px; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="#top">
+      <h1>WooCommerce<br>Pre-Order Manager</h1>
+      <span>Documentation v1.0.1</span>
+    </a>
+    <nav>
+      <a href="#requirements" class="section-title">Getting Started</a>
+      <a href="#requirements">1. Requirements</a>
+      <a href="#installation">2. Installation</a>
+
+      <a href="#global-settings" class="section-title">Configuration</a>
+      <a href="#global-settings">3. Global Settings</a>
+      <a href="#s3-1" class="sub">Button Text</a>
+      <a href="#s3-2" class="sub">Messages</a>
+      <a href="#s3-3" class="sub">Cart & Checkout Text</a>
+      <a href="#s3-4" class="sub">Out-of-Stock</a>
+      <a href="#s3-5" class="sub">Test Site</a>
+
+      <a href="#product-setup" class="section-title">Per-Product Setup</a>
+      <a href="#product-setup">4. Pre-Order Product</a>
+      <a href="#s4-1" class="sub">Enable Pre-Orders</a>
+      <a href="#s4-2" class="sub">Release Date</a>
+      <a href="#s4-3" class="sub">Pre-Order Fee</a>
+      <a href="#s4-4" class="sub">Payment Timing</a>
+      <a href="#s4-5" class="sub">Deposit</a>
+      <a href="#s4-6" class="sub">Quantity Limit</a>
+
+      <a href="#managing" class="section-title">Admin Tools</a>
+      <a href="#managing">5. Managing Pre-Orders</a>
+      <a href="#csv-export">6. CSV Export</a>
+      <a href="#dashboard-widget">7. Dashboard Widget</a>
+      <a href="#emails">8. Email Notifications</a>
+
+      <a href="#customer-experience" class="section-title">Customer Experience</a>
+      <a href="#customer-experience">9. Customer Experience</a>
+      <a href="#cron">10. Automated Release</a>
+
+      <a href="#blocks" class="section-title">Compatibility</a>
+      <a href="#blocks">11. Blocks</a>
+      <a href="#hpos">12. HPOS</a>
+      <a href="#subscriptions">13. Subscriptions</a>
+
+      <a href="#developers" class="section-title">Developers</a>
+      <a href="#developers">14. Hooks Reference</a>
+
+      <a href="#troubleshooting" class="section-title">Help</a>
+      <a href="#troubleshooting">15. Troubleshooting</a>
+      <a href="#faq">16. FAQ</a>
+    </nav>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="main" id="top">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="badge">Official Documentation</div>
+      <h1>WooCommerce Pre-Order Manager</h1>
+      <p>Accept pre-orders, collect deposits, and automate product releases — complete guide for store owners and developers.</p>
+      <div class="meta-pills">
+        <div class="meta-pill"><strong>Version:</strong> 1.0.1</div>
+        <div class="meta-pill"><strong>Author:</strong> NextXen Technology</div>
+        <div class="meta-pill"><strong>WordPress:</strong> 6.8+</div>
+        <div class="meta-pill"><strong>WooCommerce:</strong> 10.4+</div>
+        <div class="meta-pill"><strong>PHP:</strong> 7.4+</div>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#global-settings">Global Settings</a>
+          <ol>
+            <li><a href="#s3-1">Button Text Customization</a></li>
+            <li><a href="#s3-2">Message Customization</a></li>
+            <li><a href="#s3-3">Cart &amp; Checkout Text</a></li>
+            <li><a href="#s3-4">Out-of-Stock Products</a></li>
+            <li><a href="#s3-5">Test Site Settings</a></li>
+          </ol>
+        </li>
+        <li><a href="#product-setup">Setting Up a Pre-Order Product</a>
+          <ol>
+            <li><a href="#s4-1">Enable Pre-Orders</a></li>
+            <li><a href="#s4-2">Release Date</a></li>
+            <li><a href="#s4-3">Pre-Order Fee</a></li>
+            <li><a href="#s4-4">Payment Timing</a></li>
+            <li><a href="#s4-5">Deposit (Partial Payment)</a></li>
+            <li><a href="#s4-6">Quantity Limit</a></li>
+          </ol>
+        </li>
+        <li><a href="#managing">Managing Pre-Orders</a></li>
+        <li><a href="#csv-export">CSV Export</a></li>
+        <li><a href="#dashboard-widget">Dashboard Widget</a></li>
+        <li><a href="#emails">Email Notifications</a></li>
+        <li><a href="#customer-experience">Customer Experience</a></li>
+        <li><a href="#cron">Automated Release (WP-Cron)</a></li>
+        <li><a href="#blocks">WooCommerce Blocks Compatibility</a></li>
+        <li><a href="#hpos">HPOS Compatibility</a></li>
+        <li><a href="#subscriptions">WooCommerce Subscriptions Compatibility</a></li>
+        <li><a href="#developers">For Developers — Hooks Reference</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#faq">Frequently Asked Questions</a></li>
+      </ol>
+    </div>
+
+    <!-- ─── 1. Requirements ─── -->
+    <div class="doc-section" id="requirements">
+      <h2 class="section-heading">1. Requirements</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Requirement</th><th>Minimum</th><th>Tested Up To</th></tr></thead>
+          <tbody>
+            <tr><td>WordPress</td><td>6.8</td><td>7.0</td></tr>
+            <tr><td>WooCommerce</td><td>10.4</td><td>10.6</td></tr>
+            <tr><td>PHP</td><td>7.4</td><td>8.4</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <div class="callout-icon">⚠</div>
+        <p>WooCommerce must be installed and <strong>active</strong> before activating this plugin. If WooCommerce is missing, the plugin will display an admin notice and will not load.</p>
+      </div>
+    </div>
+
+    <!-- ─── 2. Installation ─── -->
+    <div class="doc-section" id="installation">
+      <h2 class="section-heading">2. Installation</h2>
+
+      <h3 class="sub-heading">2.1 Upload via WordPress Admin (Recommended)</h3>
+      <ol class="steps">
+        <li>Log in to your WordPress admin panel.</li>
+        <li>Go to <strong>Plugins → Add New Plugin</strong>.</li>
+        <li>Click <strong>Upload Plugin</strong> at the top of the page.</li>
+        <li>Click <strong>Choose File</strong>, select the <code>woocommerce-pre-order-manager.zip</code> file, then click <strong>Install Now</strong>.</li>
+        <li>After installation completes, click <strong>Activate Plugin</strong>.</li>
+      </ol>
+
+      <h3 class="sub-heading">2.2 Upload via FTP</h3>
+      <ol class="steps">
+        <li>Unzip the downloaded <code>woocommerce-pre-order-manager.zip</code> file.</li>
+        <li>Connect to your server with an FTP client (e.g., FileZilla).</li>
+        <li>Upload the <code>woocommerce-pre-order-manager</code> folder to <code>/wp-content/plugins/</code>.</li>
+        <li>In WordPress admin, go to <strong>Plugins → Installed Plugins</strong> and click <strong>Activate</strong>.</li>
+      </ol>
+
+      <h3 class="sub-heading">2.3 Verify Installation</h3>
+      <p>After activation confirm the plugin is running by checking:</p>
+      <ul>
+        <li><strong>WooCommerce → Pre-Orders</strong> appears in the left admin menu.</li>
+        <li><strong>WooCommerce → Settings → Pre-Orders</strong> tab is visible.</li>
+        <li>The WordPress admin dashboard shows a <strong>Pre-Order Manager</strong> widget.</li>
+      </ul>
+    </div>
+
+    <!-- ─── 3. Global Settings ─── -->
+    <div class="doc-section" id="global-settings">
+      <h2 class="section-heading">3. Global Settings</h2>
+      <p>Navigate to <strong>WooCommerce → Settings → Pre-Orders</strong> to configure store-wide defaults.</p>
+
+      <h3 class="sub-heading" id="s3-1">3.1 Button Text Customization</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>"Add to cart" button text</td><td><code>Pre-order now</code></td><td>Text on the product page button when pre-orders are active</td></tr>
+            <tr><td>"Place order" button text</td><td><code>Place pre-order now</code></td><td>Text on the checkout button when the cart contains a pre-order</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <p>Keep labels action-oriented. Examples: <em>"Reserve yours"</em>, <em>"Claim your copy"</em>, <em>"Pre-order today"</em>.</p>
+      </div>
+
+      <h3 class="sub-heading" id="s3-2">3.2 Message Customization</h3>
+      <p>Messages appear on product pages and in product listings to inform customers about the release date.</p>
+      <h4>Available Placeholders</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Placeholder</th><th>Output Example</th></tr></thead>
+          <tbody>
+            <tr><td><code>{availability_date}</code></td><td>January 15, 2026</td></tr>
+            <tr><td><code>{availability_time}</code></td><td>09:00 AM</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Setting</th><th>Default</th><th>Where It Appears</th></tr></thead>
+          <tbody>
+            <tr><td>Product page message</td><td>This item will be released {availability_date}.</td><td>Below the price on single-product pages</td></tr>
+            <tr><td>Product list message</td><td>Available {availability_date}.</td><td>Under the product in shop/category pages</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Both fields accept basic HTML (<code>&lt;strong&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;em&gt;</code>). Leave either field <strong>empty</strong> to hide it entirely.</p>
+      <p><strong>Example custom message:</strong></p>
+      <pre><code>Launching &lt;strong&gt;{availability_date}&lt;/strong&gt; — secure yours before we sell out!</code></pre>
+
+      <h3 class="sub-heading" id="s3-3">3.3 Cart &amp; Checkout Text</h3>
+      <h4>Available Placeholders</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Placeholder</th><th>Output Example</th></tr></thead>
+          <tbody>
+            <tr><td><code>{order_total}</code></td><td>$49.00</td></tr>
+            <tr><td><code>{availability_date}</code></td><td>January 15, 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Setting</th><th>Default</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Release date label</td><td>Available</td><td>Label shown next to the release date in the cart line item</td></tr>
+            <tr><td>Charged upon release text</td><td>{order_total} charged {availability_date}</td><td>Shown when payment timing is "upon release"</td></tr>
+            <tr><td>Charged upfront text</td><td>{order_total} charged upfront</td><td>Shown when payment timing is "upfront"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading" id="s3-4">3.4 Out-of-Stock Products</h3>
+      <p><strong>Setting:</strong> <em>Enable pre-orders for out-of-stock products</em></p>
+      <p>When enabled, the plugin automatically enables pre-orders on compatible products (simple, variable, composite, bundle, booking, mix-and-match, subscription) when they go out of stock. The product is marked as "in stock" with stock management disabled, allowing customers to place pre-orders while inventory is unavailable.</p>
+      <div class="callout note">
+        <div class="callout-icon">ℹ</div>
+        <p>For variable products, <strong>all</strong> variations must be out of stock before this triggers. This setting does not override explicit per-product pre-order configuration.</p>
+      </div>
+
+      <h3 class="sub-heading" id="s3-5">3.5 Test Site Settings</h3>
+      <p><strong>Setting:</strong> <em>Disable automatic pre-order processing</em></p>
+      <p>Check this box on staging or development sites to prevent WP-Cron from automatically charging customers or completing orders when a release date passes. This lets you test the full pre-order flow without affecting real payments.</p>
+      <div class="callout danger">
+        <div class="callout-icon">🚫</div>
+        <p>Always leave this <strong>unchecked</strong> on your live production store.</p>
+      </div>
+    </div>
+
+    <!-- ─── 4. Product Setup ─── -->
+    <div class="doc-section" id="product-setup">
+      <h2 class="section-heading">4. Setting Up a Pre-Order Product</h2>
+      <p>Pre-order settings are configured <strong>per product</strong>. Each product can have completely independent pre-order behavior.</p>
+
+      <h3 class="sub-heading" id="s4-1">4.1 Enable Pre-Orders</h3>
+      <ol class="steps">
+        <li>Go to <strong>Products → All Products</strong> and open the product you want to configure.</li>
+        <li>Scroll down to the <strong>Product data</strong> panel.</li>
+        <li>Click the <strong>Pre-Orders</strong> tab (alongside General, Inventory, Shipping, etc.).</li>
+        <li>Check the <strong>Enable pre-orders</strong> checkbox.</li>
+      </ol>
+      <h4>Supported Product Types</h4>
+      <ul>
+        <li>Simple</li>
+        <li>Variable</li>
+        <li>Composite <em>(requires WooCommerce Composite Products)</em></li>
+        <li>Bundle <em>(requires WooCommerce Product Bundles)</em></li>
+        <li>Booking <em>(requires WooCommerce Bookings)</em></li>
+        <li>Mix and Match <em>(requires WooCommerce Mix and Match)</em></li>
+        <li>Subscription / Variable Subscription <em>(requires WooCommerce Subscriptions 6.2.0+)</em></li>
+      </ul>
+      <div class="callout warn">
+        <div class="callout-icon">⚠</div>
+        <p>If a product already has <strong>active pre-orders</strong>, the Pre-Orders tab will show a warning and lock the settings. You must complete or cancel all active pre-orders before changing the configuration.</p>
+      </div>
+
+      <h3 class="sub-heading" id="s4-2">4.2 Release Date</h3>
+      <p><strong>Field:</strong> <em>Release date (optional)</em> &nbsp;|&nbsp; <strong>Format:</strong> <code>YYYY-MM-DD HH:MM</code></p>
+      <p>Enter the date and time when the product will become available. A date-time picker is provided for convenience.</p>
+      <ul>
+        <li>Dates are stored and evaluated in your <strong>store's timezone</strong> (WordPress → Settings → General → Timezone).</li>
+        <li>If left blank, the product stays in pre-order status until you manually complete or cancel.</li>
+        <li>Customers will see this date in availability messages, the cart, and order confirmations.</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <p>At release time, WP-Cron automatically completes all pre-orders for the product. See <a href="#cron">Section 10</a> for cron setup details.</p>
+      </div>
+
+      <h3 class="sub-heading" id="s4-3">4.3 Pre-Order Fee</h3>
+      <p><strong>Field:</strong> <em>Pre-order fee (optional)</em></p>
+      <p>Enter a monetary amount to charge <strong>in addition to</strong> the product price as a reservation surcharge. Leave blank or set to <code>0</code> for no additional fee. This fee appears as a separate cart line item, clearly labeled.</p>
+
+      <h3 class="sub-heading" id="s4-4">4.4 Payment Timing</h3>
+      <p>Choose when customers are charged:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Option</th><th>Behavior</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Upfront (pay now)</td>
+              <td>Full payment is collected at checkout. Order status is "Pre-ordered" until release, then transitions to "Processing" (physical) or "Completed" (virtual/downloadable).</td>
+            </tr>
+            <tr>
+              <td>Upon release (pay later)</td>
+              <td>No payment at checkout. Order stays "Pre-ordered" until release. On release, if a saved payment method exists it is charged automatically; otherwise the customer is emailed a payment link.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout note">
+        <div class="callout-icon">ℹ</div>
+        <p>"Upon release" requires a payment gateway that supports tokenized/saved payment methods (e.g., Stripe, PayPal). For gateways that don't support this, a "Pay Later" placeholder gateway is used and the customer receives a payment link email on release.</p>
+      </div>
+
+      <h3 class="sub-heading" id="s4-5">4.5 Deposit (Partial Payment)</h3>
+      <p>Collect a partial payment now and charge the remaining balance automatically when the product releases.</p>
+      <h4>Step 1 — Configure the deposit on the product</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Field</th><th>Options</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Deposit type</td><td>None / Fixed amount / Percentage</td><td>How the deposit amount is calculated</td></tr>
+            <tr><td>Deposit value</td><td>Any positive number</td><td>The fixed dollar amount (e.g. <code>20</code>) or percentage (e.g. <code>25</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>Examples</h4>
+      <ul>
+        <li><strong>Fixed — $50:</strong> Customer pays $50 at checkout; remaining balance collected on release.</li>
+        <li><strong>Percentage — 30%:</strong> Customer pays 30% of the product price now; remaining 70% collected on release.</li>
+      </ul>
+      <h4>What happens on release</h4>
+      <ul>
+        <li>A new WooCommerce order is automatically created for the remaining balance.</li>
+        <li>The customer receives an email with the balance order details and a payment link.</li>
+        <li>The original order is updated with a note linking to the balance order.</li>
+      </ul>
+      <h4>Where to see deposit data</h4>
+      <ul>
+        <li><strong>Order detail page (admin):</strong> A "Deposit Information" section shows deposit paid, remaining balance, and a link to the balance order.</li>
+        <li><strong>CSV export:</strong> "Deposit Paid" and "Remaining Balance" columns are included.</li>
+        <li><strong>Dashboard widget:</strong> Active revenue includes deposit amounts.</li>
+      </ul>
+
+      <h3 class="sub-heading" id="s4-6">4.6 Quantity Limit</h3>
+      <p><strong>Field:</strong> <em>Max pre-orders (optional)</em> — Enter a whole number. Leave blank or enter <code>0</code> for unlimited.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>What It Does</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td>Cart validation</td><td>When the cap is reached, adding the product to the cart is blocked with a clear error notice.</td></tr>
+            <tr><td>Low-stock notice</td><td>When fewer than 10 slots remain, a notice appears on the product page: <em>"Only X pre-order slots remaining — order soon!"</em></td></tr>
+            <tr><td>Sold-out notice</td><td>When 0 slots remain: <em>"Pre-orders are now closed for this product."</em></td></tr>
+            <tr><td>Concurrent safety</td><td>Enforced server-side — concurrent orders cannot exceed the limit.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout note">
+        <div class="callout-icon">ℹ</div>
+        <p>The count includes only orders with an <strong>active</strong> pre-order status. Completed and cancelled orders do not count toward the limit.</p>
+      </div>
+    </div>
+
+    <!-- ─── 5. Managing ─── -->
+    <div class="doc-section" id="managing">
+      <h2 class="section-heading">5. Managing Pre-Orders (Admin)</h2>
+      <p>Navigate to <strong>WooCommerce → Pre-Orders</strong> to access the pre-order management screen. It has two tabs: <strong>Manage</strong> and <strong>Actions</strong>.</p>
+
+      <h3 class="sub-heading">5.1 The Pre-Orders List (Manage Tab)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Column</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Order</td><td>Order number and customer name (links to the full WooCommerce order)</td></tr>
+            <tr><td>Pre-Order Status</td><td>Active, Completed, or Cancelled</td></tr>
+            <tr><td>Product</td><td>Pre-ordered product (links to product edit page)</td></tr>
+            <tr><td>Release Date</td><td>Scheduled release date</td></tr>
+            <tr><td>When Charged</td><td>Upfront or Upon Release</td></tr>
+            <tr><td>Order Total</td><td>Total value of the order</td></tr>
+            <tr><td>Date</td><td>Order creation date</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">5.2 Bulk Actions</h3>
+      <p>Select one or more pre-orders using the checkboxes, then use the <strong>Bulk Actions</strong> dropdown to <strong>Complete</strong> or <strong>Cancel</strong> them in batch.</p>
+
+      <h3 class="sub-heading">5.3 Filtering &amp; Searching</h3>
+      <ul>
+        <li><strong>By product</strong> — Filter to show only pre-orders for a specific product.</li>
+        <li><strong>By status</strong> — Show Active, Completed, or Cancelled pre-orders.</li>
+        <li><strong>Search</strong> — Search by order number or customer name/email.</li>
+      </ul>
+
+      <h3 class="sub-heading">5.4 Completing Pre-Orders</h3>
+      <p>You can complete pre-orders in three ways:</p>
+      <ul>
+        <li><strong>Individually:</strong> Open the WooCommerce order, use the Order Actions box.</li>
+        <li><strong>Bulk:</strong> Select orders in the Manage tab → Bulk Actions → Complete.</li>
+        <li><strong>By product (Actions tab):</strong> Select the product, then click <em>Complete Pre-Orders</em>.</li>
+      </ul>
+      <p>When completed: order status changes to Processing/Completed, "upon release" orders are charged or sent a payment link, deposit balance orders are created, and the customer receives a <strong>Pre-Order Available</strong> email.</p>
+
+      <h3 class="sub-heading">5.5 Cancelling Pre-Orders</h3>
+      <p>Via the <strong>Actions</strong> tab, select the product and click <em>Cancel Pre-Orders</em>. When cancelled: order status changes to Cancelled, the customer receives a <strong>Pre-Order Cancelled</strong> email, and the admin receives an <strong>Admin Pre-Order Cancelled</strong> email. Refunds for upfront payments must be processed manually.</p>
+    </div>
+
+    <!-- ─── 6. CSV Export ─── -->
+    <div class="doc-section" id="csv-export">
+      <h2 class="section-heading">6. CSV Export</h2>
+      <p>Export all pre-order data to a spreadsheet with one click.</p>
+      <ol class="steps">
+        <li>Go to <strong>WooCommerce → Pre-Orders</strong>.</li>
+        <li>Click the <strong>Export CSV</strong> button in the page header.</li>
+        <li>Your browser downloads a file named <code>pre-orders-YYYY-MM-DD-HHmmss.csv</code>.</li>
+      </ol>
+      <h3 class="sub-heading">CSV Columns</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Column</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Order ID</td><td>WooCommerce order number</td></tr>
+            <tr><td>Pre-Order Status</td><td>Active, Completed, or Cancelled</td></tr>
+            <tr><td>Order Status</td><td>WooCommerce order status (e.g., Processing)</td></tr>
+            <tr><td>Customer Name</td><td>Billing first name + last name</td></tr>
+            <tr><td>Customer Email</td><td>Billing email address</td></tr>
+            <tr><td>Product</td><td>Pre-ordered product name</td></tr>
+            <tr><td>Release Date</td><td>Product availability date</td></tr>
+            <tr><td>When Charged</td><td>"Upon release" or "Upfront"</td></tr>
+            <tr><td>Deposit Paid</td><td>Deposit amount paid (blank if no deposit)</td></tr>
+            <tr><td>Remaining Balance</td><td>Balance due on release (blank if no deposit)</td></tr>
+            <tr><td>Order Total</td><td>Full order total</td></tr>
+            <tr><td>Date Created</td><td>Order creation date and time</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <p>The file is UTF-8 encoded with a BOM, ensuring correct character display when opened in Microsoft Excel. Export requires the <code>manage_woocommerce</code> capability (Shop Manager or Administrator role).</p>
+      </div>
+    </div>
+
+    <!-- ─── 7. Dashboard Widget ─── -->
+    <div class="doc-section" id="dashboard-widget">
+      <h2 class="section-heading">7. Dashboard Widget</h2>
+      <p>The <strong>Pre-Order Manager</strong> widget appears on your WordPress admin dashboard (<strong>Dashboard → Home</strong>).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Section</th><th>What It Shows</th></tr></thead>
+          <tbody>
+            <tr><td>Active Pre-Orders</td><td>Total active order count + active revenue (deposits + upfront payments)</td></tr>
+            <tr><td>This Month</td><td>New, completed, and cancelled pre-orders for the current calendar month</td></tr>
+            <tr><td>Upcoming Releases</td><td>Up to 5 products releasing within 30 days, sorted by release date, each linking to the product edit page</td></tr>
+            <tr><td>Quick Actions</td><td>Manage Pre-Orders · Settings · Export CSV</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout note">
+        <div class="callout-icon">ℹ</div>
+        <p>Stats are cached for <strong>5 minutes</strong> using a WordPress transient. The cache clears automatically whenever a pre-order status changes, so numbers are always fresh after any activity.</p>
+      </div>
+    </div>
+
+    <!-- ─── 8. Emails ─── -->
+    <div class="doc-section" id="emails">
+      <h2 class="section-heading">8. Email Notifications</h2>
+      <p>Configure all emails at <strong>WooCommerce → Settings → Emails</strong>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Email</th><th>Recipient</th><th>Trigger</th></tr></thead>
+          <tbody>
+            <tr><td>New Pre-Order</td><td>Admin</td><td>A customer places a new pre-order</td></tr>
+            <tr><td>Pre-Ordered Confirmation</td><td>Customer</td><td>A pre-order is successfully placed</td></tr>
+            <tr><td>Pre-Order Available</td><td>Customer</td><td>A pre-order is completed/released</td></tr>
+            <tr><td>Pre-Order Cancelled</td><td>Customer</td><td>A pre-order is cancelled</td></tr>
+            <tr><td>Admin Pre-Order Cancelled</td><td>Admin</td><td>A pre-order is cancelled</td></tr>
+            <tr><td>Pre-Order Date Changed</td><td>Customer</td><td>The release date for a product is changed</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="sub-heading">Manually Resend an Email</h3>
+      <ol class="steps">
+        <li>Open the WooCommerce order.</li>
+        <li>In the <strong>Order actions</strong> box (top right), select the email action from the dropdown.</li>
+        <li>Click the send button (►) to dispatch the email immediately.</li>
+      </ol>
+    </div>
+
+    <!-- ─── 9. Customer Experience ─── -->
+    <div class="doc-section" id="customer-experience">
+      <h2 class="section-heading">9. Customer Experience</h2>
+
+      <h3 class="sub-heading">9.1 Product Page</h3>
+      <p>When a product has pre-orders enabled, customers see:</p>
+      <ul>
+        <li><strong>Availability message</strong> below the price (customizable in Settings).</li>
+        <li><strong>"Pre-order now"</strong> button instead of "Add to cart".</li>
+        <li><strong>Slots remaining notice</strong> if a quantity limit is set and fewer than 10 slots remain.</li>
+        <li><strong>Sold-out notice</strong> if the quantity limit has been reached.</li>
+      </ul>
+
+      <h3 class="sub-heading">9.2 Cart &amp; Checkout</h3>
+      <ul>
+        <li>Pre-ordered items are labeled with their release date in the cart.</li>
+        <li>Payment timing text is displayed (e.g., <em>"$49.00 charged January 15, 2026"</em>).</li>
+        <li>If a deposit is configured, the cart shows the deposit amount and remaining balance.</li>
+        <li>The checkout button reads <em>"Place pre-order now"</em> (customizable).</li>
+        <li>Only one pre-order product can be in the cart at a time.</li>
+      </ul>
+
+      <h3 class="sub-heading">9.3 My Account — Pre-Orders</h3>
+      <ol class="steps">
+        <li>Customer logs in and goes to <strong>My Account</strong>.</li>
+        <li>Clicks the <strong>Pre-Orders</strong> tab in the account menu.</li>
+        <li>Sees a list of pre-orders with status, product, release date, and order total.</li>
+        <li>Can click <strong>Cancel</strong> to cancel an active pre-order (if permitted).</li>
+      </ol>
+
+      <h3 class="sub-heading">9.4 Countdown Timer Shortcode</h3>
+      <p>Embed a live countdown to the release date anywhere on your site:</p>
+      <pre><code>[woocommerce_pre_order_countdown]</code></pre>
+      <p>Works in pages, posts, sidebar widgets, and theme templates. If no release date is set, the shortcode outputs nothing.</p>
+    </div>
+
+    <!-- ─── 10. Cron ─── -->
+    <div class="doc-section" id="cron">
+      <h2 class="section-heading">10. Automated Release (WP-Cron)</h2>
+      <p>The plugin uses WordPress's built-in scheduling system (WP-Cron) to automatically process pre-orders when a release date arrives.</p>
+      <h3 class="sub-heading">What happens at release</h3>
+      <ul>
+        <li>All active pre-orders for that product are marked as completed.</li>
+        <li>"Upon release" orders are charged (saved payment method) or sent a payment link email.</li>
+        <li>Follow-up balance orders are created for deposit-based pre-orders.</li>
+        <li><strong>Pre-Order Available</strong> emails are sent to all customers.</li>
+        <li>Order statuses transition to "Processing" (physical) or "Completed" (virtual/downloadable).</li>
+      </ul>
+      <div class="callout warn">
+        <div class="callout-icon">⚠</div>
+        <p>WP-Cron relies on website traffic to trigger. On low-traffic sites, releases may be delayed. For reliable, time-critical releases, set up a <strong>real server cron job</strong>.</p>
+      </div>
+      <h3 class="sub-heading">Set Up a Real Server Cron Job</h3>
+      <p>Using cURL:</p>
+      <pre><code># Runs every 5 minutes
+*/5 * * * * curl -s https://yourdomain.com/wp-cron.php?doing_wp_cron &gt; /dev/null 2&gt;&amp;1</code></pre>
+      <p>Using WP-CLI:</p>
+      <pre><code>*/5 * * * * cd /path/to/wordpress &amp;&amp; wp cron event run --due-now &gt; /dev/null 2&gt;&amp;1</code></pre>
+    </div>
+
+    <!-- ─── 11. Blocks ─── -->
+    <div class="doc-section" id="blocks">
+      <h2 class="section-heading">11. WooCommerce Blocks Compatibility</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Block</th><th>Support</th></tr></thead>
+          <tbody>
+            <tr><td>Cart Block</td><td>Pre-order items display correctly with availability messages and pricing</td></tr>
+            <tr><td>Checkout Block</td><td>Full pre-order checkout flow; payment timing text displayed</td></tr>
+            <tr><td>Product Block Editor</td><td>Pre-Orders product tab available in the block-based product editor</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>No additional configuration is required. Block compatibility is auto-detected.</p>
+    </div>
+
+    <!-- ─── 12. HPOS ─── -->
+    <div class="doc-section" id="hpos">
+      <h2 class="section-heading">12. HPOS Compatibility</h2>
+      <p>WooCommerce High-Performance Order Storage (HPOS / Custom Order Tables) is fully supported. The plugin:</p>
+      <ul>
+        <li>Declares HPOS compatibility via the official <code>FeaturesUtil</code> API.</li>
+        <li>Stores all pre-order meta in both the classic <code>wp_postmeta</code> table and the HPOS <code>wc_orders_meta</code> table.</li>
+        <li>All queries (quantity limit counts, dashboard stats, CSV export) use HPOS-aware SQL automatically.</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <p>You don't need to take any action — compatibility is automatic regardless of whether HPOS is enabled or disabled on your store.</p>
+      </div>
+    </div>
+
+    <!-- ─── 13. Subscriptions ─── -->
+    <div class="doc-section" id="subscriptions">
+      <h2 class="section-heading">13. WooCommerce Subscriptions Compatibility</h2>
+      <p>Requires <strong>WooCommerce Subscriptions 6.2.0 or later</strong>. Supported types: <code>subscription</code>, <code>variable-subscription</code>.</p>
+      <ul>
+        <li>Customers place a pre-order for a subscription product.</li>
+        <li>No subscription charge is taken at checkout (uses the "upon release" flow).</li>
+        <li>When the product releases, the subscription begins and the first payment is collected.</li>
+      </ul>
+      <div class="callout warn">
+        <div class="callout-icon">⚠</div>
+        <p>Subscription products with <strong>synchronized billing</strong> or <strong>trial periods</strong> cannot have their pre-order settings changed while those features are active. A notice is shown on the product edit page when these conditions are detected.</p>
+      </div>
+    </div>
+
+    <!-- ─── 14. Developers ─── -->
+    <div class="doc-section" id="developers">
+      <h2 class="section-heading">14. For Developers — Hooks Reference</h2>
+
+      <h3 class="sub-heading">Action Hooks</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Hook</th><th>Arguments</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>wc_pre_order_manager_admin_page_actions</code></td><td>—</td><td>Fires in the Pre-Orders admin page header. Used to add buttons.</td></tr>
+            <tr><td><code>wc_pre_order_manager_product_options_start</code></td><td><code>$post_id</code></td><td>Fires at the start of the Pre-Orders product tab panel.</td></tr>
+            <tr><td><code>wc_pre_order_manager_product_options_end</code></td><td>—</td><td>Fires at the end of the Pre-Orders product tab panel.</td></tr>
+            <tr><td><code>wc_pre_order_manager_save_product_options</code></td><td><code>$post_id, $is_enabled, $timestamp</code></td><td>Fires when a product with pre-order settings is saved. Use priority <code>10, 3</code>.</td></tr>
+            <tr><td><code>wc_pre_order_manager_pre_order_completed</code></td><td><code>$order</code></td><td>Fires when a pre-order is completed/released.</td></tr>
+            <tr><td><code>wc_pre_order_manager_pre_order_cancelled</code></td><td><code>$order</code></td><td>Fires when a pre-order is cancelled.</td></tr>
+            <tr><td><code>wc_pre_order_manager_pre_order_date_changed</code></td><td><code>$order, $message</code></td><td>Fires when a product's release date is changed.</td></tr>
+            <tr><td><code>wc_pre_order_manager_pre_ordered</code></td><td><code>$order</code></td><td>Fires when a new pre-order is placed.</td></tr>
+            <tr><td><code>wc_pre_order_manager_pre_order_available</code></td><td><code>$order</code></td><td>Fires when a pre-ordered product becomes available.</td></tr>
+            <tr><td><code>wc_pre_order_status_new_to_active</code></td><td><code>$order</code></td><td>Fires when a pre-order moves from new to active status.</td></tr>
+            <tr><td><code>wc_pre_order_status_active_to_cancelled</code></td><td><code>$order</code></td><td>Fires when a pre-order is cancelled.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">Filter Hooks</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Hook</th><th>Arguments</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>wc_pre_order_manager_settings</code></td><td><code>$settings</code></td><td>Filter the global settings array to add/remove settings fields.</td></tr>
+            <tr><td><code>wc_pre_order_manager_supported_product_types</code></td><td><code>$types</code></td><td>Filter the list of supported product type slugs.</td></tr>
+            <tr><td><code>wc_pre_order_manager_admin_script_data</code></td><td><code>$data, $hook_suffix</code></td><td>Filter the data passed to the admin JavaScript.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">Order Meta Keys</h3>
+      <div class="meta-grid">
+        <div class="meta-key"><code>_wc_pre_order_manager_is_pre_order</code><p><code>1</code> if the order is a pre-order</p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_status</code><p><code>active</code>, <code>completed</code>, or <code>cancelled</code></p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_when_charged</code><p><code>upfront</code> or <code>upon_release</code></p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_deposit_paid</code><p>Deposit amount paid (empty string if no deposit)</p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_remaining_balance</code><p>Balance due on release</p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_original_price</code><p>Original product price before deposit reduction</p></div>
+      </div>
+
+      <h3 class="sub-heading">Product Meta Keys</h3>
+      <div class="meta-grid">
+        <div class="meta-key"><code>_wc_pre_order_manager_enabled</code><p><code>yes</code> if pre-orders are enabled</p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_availability_datetime</code><p>Unix timestamp of the release date</p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_when_to_charge</code><p><code>upfront</code> or <code>upon_release</code></p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_fee</code><p>Optional pre-order fee amount</p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_max_quantity</code><p>Maximum pre-orders allowed (0 = unlimited)</p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_deposit_type</code><p><code>none</code>, <code>fixed</code>, or <code>percent</code></p></div>
+        <div class="meta-key"><code>_wc_pre_order_manager_deposit_value</code><p>The deposit amount or percentage</p></div>
+      </div>
+
+      <h3 class="sub-heading">Code Examples</h3>
+      <h4>Add a custom field to the Pre-Orders product tab</h4>
+      <pre><code>// Render the field
+add_action( 'wc_pre_order_manager_product_options_end', function() {
+    woocommerce_wp_text_input( array(
+        'id'    => '_my_custom_preorder_field',
+        'label' => __( 'My Custom Field', 'my-plugin' ),
+    ) );
+} );
+
+// Save the field (3 accepted args required)
+add_action( 'wc_pre_order_manager_save_product_options', function( $post_id, $is_enabled, $timestamp ) {
+    if ( isset( $_POST['_my_custom_preorder_field'] ) ) {
+        update_post_meta(
+            $post_id,
+            '_my_custom_preorder_field',
+            sanitize_text_field( wp_unslash( $_POST['_my_custom_preorder_field'] ) )
+        );
+    }
+}, 10, 3 );</code></pre>
+
+      <h4>Add a custom button to the Pre-Orders admin page</h4>
+      <pre><code>add_action( 'wc_pre_order_manager_admin_page_actions', function() {
+    $url = admin_url( 'admin.php?page=wc_pre_order_manager&amp;action=my_action' );
+    printf(
+        '&lt;a href="%s" class="page-title-action"&gt;%s&lt;/a&gt;',
+        esc_url( $url ),
+        esc_html__( 'My Action', 'my-plugin' )
+    );
+} );</code></pre>
+
+      <h4>Run code when a pre-order is completed</h4>
+      <pre><code>add_action( 'wc_pre_order_manager_pre_order_completed', function( $order ) {
+    // $order is a WC_Order object
+    $product_id = WC_Pre_Order_Manager_Order::get_pre_order_product( $order )->get_id();
+    // your logic here...
+} );</code></pre>
+    </div>
+
+    <!-- ─── 15. Troubleshooting ─── -->
+    <div class="doc-section" id="troubleshooting">
+      <h2 class="section-heading">15. Troubleshooting</h2>
+
+      <div class="trouble-item">
+        <div class="trouble-problem">Pre-orders are not releasing automatically</div>
+        <div class="trouble-detail">
+          <h4>Cause</h4>
+          <p>WP-Cron is not running reliably, or automatic processing is disabled.</p>
+          <h4>Fix</h4>
+          <ul>
+            <li>Confirm the release date is in the past (in your store's timezone).</li>
+            <li>Go to <strong>WooCommerce → Settings → Pre-Orders → Test site settings</strong> and confirm <em>Disable automatic pre-order processing</em> is <strong>unchecked</strong>.</li>
+            <li>Set up a real server cron job (see <a href="#cron">Section 10</a>).</li>
+            <li>Use WP Crontrol plugin to manually trigger <code>wc_pre_order_manager_completion_check</code> and confirm it fires.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-problem">The Pre-Orders product tab is not visible</div>
+        <div class="trouble-detail">
+          <h4>Cause</h4>
+          <p>Unsupported product type, or stale cache.</p>
+          <h4>Fix</h4>
+          <ul>
+            <li>Confirm the product type is in the supported list (see <a href="#s4-1">Section 4.1</a>).</li>
+            <li>Clear any caching plugins and reload the product edit page.</li>
+            <li>Confirm the plugin is active in <strong>Plugins → Installed Plugins</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-problem">I can't change a product's pre-order settings</div>
+        <div class="trouble-detail">
+          <h4>Cause</h4>
+          <p>The product has active pre-orders. Settings are locked to prevent inconsistencies.</p>
+          <h4>Fix</h4>
+          <p>Go to <strong>WooCommerce → Pre-Orders</strong>, filter by that product, then complete or cancel all active pre-orders. Once no active pre-orders remain, settings become editable.</p>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-problem">The deposit amount is not being applied in the cart</div>
+        <div class="trouble-detail">
+          <h4>Cause</h4>
+          <p>Session or caching conflict.</p>
+          <h4>Fix</h4>
+          <ul>
+            <li>Confirm <strong>Deposit type</strong> is set to Fixed or Percentage (not "None") on the product.</li>
+            <li>Clear your WooCommerce session (log out, clear cookies, log back in).</li>
+            <li>Disable any page caching plugins temporarily and retest.</li>
+            <li>Ensure no other plugin overrides <code>woocommerce_before_calculate_totals</code> at a very high priority.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-problem">CSV export is downloading an empty file</div>
+        <div class="trouble-detail">
+          <h4>Cause</h4>
+          <p>No pre-orders exist, or a PHP output buffering conflict.</p>
+          <h4>Fix</h4>
+          <ul>
+            <li>Confirm at least one pre-order exists in <strong>WooCommerce → Pre-Orders</strong>.</li>
+            <li>Deactivate caching plugins temporarily and retry.</li>
+            <li>Check your server's PHP error log for any output before the CSV headers.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-problem">Email notifications are not being sent</div>
+        <div class="trouble-detail">
+          <h4>Cause</h4>
+          <p>The email is disabled in WooCommerce settings, or SMTP is misconfigured.</p>
+          <h4>Fix</h4>
+          <ul>
+            <li>Go to <strong>WooCommerce → Settings → Emails</strong> and confirm the relevant email is <strong>enabled</strong>.</li>
+            <li>Use a plugin like WP Mail SMTP to verify your outgoing mail configuration.</li>
+            <li>Test with the <strong>Send test email</strong> feature in WooCommerce email settings.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-problem">Quantity limit is not enforcing correctly</div>
+        <div class="trouble-detail">
+          <h4>Cause</h4>
+          <p>HPOS configuration mismatch.</p>
+          <h4>Fix</h4>
+          <ul>
+            <li>Check HPOS status: <strong>WooCommerce → Settings → Advanced → Features → High-Performance Order Storage</strong>.</li>
+            <li>If you recently switched between HPOS and classic storage, run <strong>WooCommerce → Status → Tools → Sync order data</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 16. FAQ ─── -->
+    <div class="doc-section" id="faq">
+      <h2 class="section-heading">16. Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">Can customers pre-order multiple products at once?</div>
+        <div class="faq-a">No. By default, only one pre-order can be in the cart at a time. This prevents payment timing conflicts when different products have different payment models.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What happens if a customer has a deposit order and the product is cancelled?</div>
+        <div class="faq-a">The original order (deposit) is cancelled. You will need to manually refund the deposit from the WooCommerce order screen. The plugin does not issue automatic refunds.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I change the release date after a pre-order is placed?</div>
+        <div class="faq-a">Yes. Update the product's release date and save. The plugin fires the <code>wc_pre_order_manager_pre_order_date_changed</code> action and sends a <strong>Pre-Order Date Changed</strong> email to all customers with active pre-orders for that product.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Does the quantity limit count cancelled pre-orders?</div>
+        <div class="faq-a">No. Only orders with an <strong>active</strong> pre-order status count toward the limit. Completed and cancelled orders are excluded.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Is the plugin compatible with WooCommerce HPOS?</div>
+        <div class="faq-a">Yes, fully. All order queries, meta reads, and meta writes are HPOS-aware and automatically use the correct table depending on your store configuration.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Will the plugin work if WooCommerce Subscriptions is not installed?</div>
+        <div class="faq-a">Yes. Subscriptions compatibility is detected at runtime. If Subscriptions is not installed, subscription product types are simply not added to the supported list. All other features work normally.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I translate the plugin into my language?</div>
+        <div class="faq-a">Yes. The plugin is fully translation-ready. All strings use the <code>woocommerce-pre-orders-manager</code> text domain. Place your <code>.po</code>/<code>.mo</code> files in <code>/wp-content/languages/plugins/</code>.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Is the CSV export secure?</div>
+        <div class="faq-a">Yes. The export URL includes a WordPress nonce, and the handler verifies both the nonce and the <code>manage_woocommerce</code> capability before streaming any data.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What role is required to manage pre-orders?</div>
+        <div class="faq-a">The <code>manage_woocommerce</code> capability, which is assigned to the <strong>Shop Manager</strong> and <strong>Administrator</strong> roles by default.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Where can I get support?</div>
+        <div class="faq-a">Visit <a href="https://nextxentech.com/support/" target="_blank">nextxentech.com/support</a> to submit a support request. Full documentation is available at <a href="https://docs.nextxentech.com/woocommerce-pre-orders-manager/" target="_blank">docs.nextxentech.com/woocommerce-pre-orders-manager</a>.</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="doc-footer">
+      <p>WooCommerce Pre-Order Manager &mdash; &copy; 2026 <a href="https://nextxentech.com" target="_blank">NextXen Technology</a>. Licensed under GNU GPL v3.0.</p>
+      <p style="margin-top:6px;"><a href="https://nextxentech.com/support/" target="_blank">Support</a> &nbsp;&middot;&nbsp; <a href="https://docs.nextxentech.com/woocommerce-pre-orders-manager/" target="_blank">Online Docs</a></p>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
